@@ -12,12 +12,9 @@ export type ISettersState<S, TUpdater, TPrefixKey extends string> = {
 export function useSettersState<
   TState extends object,
   TUpdater extends (cb: (prev: TState) => TState) => void,
-  TPrefixKey extends string
->(
-  state: TState,
-  updater: TUpdater,
-  setPrefixKey: TPrefixKey = "set" as TPrefixKey
-) {
+  TPrefixKey extends string = "set"
+  // @ts-expect-error
+>(state: TState, updater: TUpdater, setPrefixKey: TPrefixKey = "set") {
   const ref = useRef({
     state,
     updater,
