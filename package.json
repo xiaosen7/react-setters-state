@@ -1,6 +1,6 @@
 {
   "name": "react-setters-state",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Convert your state to setters.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -13,6 +13,9 @@
   "license": "ISC",
   "peerDependencies": {
     "react": ">=16.8.0"
+  },
+  "repository": {
+    "url": "https://github.com/xiaosen7/react-setters-state/tree/main"
   },
   "devDependencies": {
     "@testing-library/react": "^14.1.2",
