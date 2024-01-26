@@ -14,7 +14,7 @@ export function useSettersState<
   TUpdater extends (cb: (prev: TState) => TState) => void,
   TPrefixKey extends string = "set"
   // @ts-expect-error
->(state: TState, updater: TUpdater, setPrefixKey: TPrefixKey = "set") {
+>(state: TState, updater: TUpdater, setterKeyPrefix: TPrefixKey = "set") {
   const ref = useRef({
     state,
     updater,
@@ -27,9 +27,9 @@ export function useSettersState<
     () =>
       Object.keys(ref.current.state).reduce(
         (setters, key) => {
-          if (!(`${setPrefixKey}${capitalizeFirstLetter(key)}` in setters)) {
+          if (!(`${setterKeyPrefix}${capitalizeFirstLetter(key)}` in setters)) {
             (setters as any)[
-              `${setPrefixKey}${capitalizeFirstLetter(key)}` as string
+              `${setterKeyPrefix}${capitalizeFirstLetter(key)}` as string
             ] = (newValue: any) => {
               ref.current.updater((prev) => ({ ...prev, [key]: newValue }));
             };
@@ -41,6 +41,6 @@ export function useSettersState<
           updater: ref.current.updater,
         }) as ISettersState<TState, TUpdater, TPrefixKey>
       ),
-    [setPrefixKey]
+    [setterKeyPrefix]
   );
 }
