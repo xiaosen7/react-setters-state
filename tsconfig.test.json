@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "types": ["vitest/globals.d.ts"],
+    "lib": ["ESNext"]
+  },
+  "include": ["__tests__/**/*.test.ts", "src"]
+}
