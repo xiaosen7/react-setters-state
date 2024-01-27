@@ -2,7 +2,23 @@
 
 Convert your state to setters.
 
+![example](./docs/example.jpg)
+
 ## Usage
+
+### Basic Usage
+
+```ts
+import useSettersState from "react-setters-state";
+
+export function Example() {
+  const stateWithSetters = useSettersState({
+    age: 1,
+  });
+}
+```
+
+### With a custom updater
 
 ```ts
 import { useState } from "react";
@@ -12,13 +28,9 @@ export function Example() {
   const [state, setState] = useState({
     age: 1,
   });
-  const setters = useSettersState(state, setState);
+  const stateWithSetters = useSettersState(state, setState);
 }
 ```
-
-Has a good type hint.
-
-![example](./docs/example.jpg)
 
 ## API
 
@@ -28,8 +40,8 @@ Has a good type hint.
 useSettersState<TState extends object, TUpdater extends (cb: (prev: TState) => TState) => void, TPrefixKey extends string = "set">(state: TState, updater: TUpdater, setterKeyPrefix?: TPrefixKey): ISettersState<TState, TUpdater, TPrefixKey>;
 ```
 
-- state: the state of setters.
-
-- updater: a updater received a `cb` function to update state.
-
-- setterKeyPrefix?: the method prefix name of setters, default to `set`
+| parameter       | required | type                                   | description                                                                               |
+| --------------- | -------- | -------------------------------------- | ----------------------------------------------------------------------------------------- |
+| state           | true     | object                                 | input state.                                                                              |
+| updater         | false    | (cb: (prev: TState) => TState) => void | a higher order function like `setState` that will receive a `cb` function to update state |
+| setterKeyPrefix | false    | string                                 | the method prefix string of setters, default to `"set"`                                   |

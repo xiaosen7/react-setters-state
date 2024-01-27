@@ -4,6 +4,7 @@
   "description": "Convert your state to setters.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
+  "types": "./dist",
   "scripts": {
     "test": "vitest",
     "build": "tsup src/index.ts --format esm,cjs --dts"

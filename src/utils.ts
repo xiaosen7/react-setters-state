@@ -6,7 +6,7 @@ export function capitalizeFirstLetter(str: string) {
   return str;
 }
 
-export function toGetters<S extends object, TRet extends object>(
+export function withGetters<S extends object, TRet extends object>(
   state: S,
   getValue: <TKey extends keyof S>(key: TKey) => S[TKey],
   ret: TRet
