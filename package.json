@@ -1,6 +1,6 @@
 {
   "name": "react-setters-state",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Convert your state to setters.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -8,7 +8,12 @@
     "test": "vitest",
     "build": "tsup src/index.ts --format esm,cjs --dts"
   },
-  "keywords": [],
+  "keywords": [
+    "react",
+    "hooks",
+    "state",
+    "setState"
+  ],
   "author": "",
   "license": "ISC",
   "peerDependencies": {
