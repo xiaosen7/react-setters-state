@@ -1,6 +1,6 @@
 {
   "name": "react-setters-state",
-  "version": "0.8.0",
+  "version": "0.8.5",
   "description": "Convert your state to setters.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
