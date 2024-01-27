@@ -36,10 +36,6 @@ export function Example() {
 
 ### useSettersState(state, updater, setterKeyPrefix)
 
-```ts
-useSettersState<TState extends object, TUpdater extends (cb: (prev: TState) => TState) => void, TPrefixKey extends string = "set">(state: TState, updater: TUpdater, setterKeyPrefix?: TPrefixKey): ISettersState<TState, TUpdater, TPrefixKey>;
-```
-
 | parameter       | required | type                                   | description                                                                               |
 | --------------- | -------- | -------------------------------------- | ----------------------------------------------------------------------------------------- |
 | state           | true     | object                                 | input state.                                                                              |
