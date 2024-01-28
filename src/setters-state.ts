@@ -1,11 +1,14 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { capitalizeFirstLetter, withGetters } from "./utils";
-import { CapitalizeFirstLetter } from "./type-utils";
+import { CapitalizeFirstLetter, FilterKeys, WithPrefix } from "./type-utils";
 
 export type ISettersState<S, TUpdater, TPrefixKey extends string> = {
-  [K in keyof S as `${TPrefixKey}${CapitalizeFirstLetter<K & string>}`]: (
-    value: S[K]
-  ) => void;
+  [K in FilterKeys<keyof S & string, TPrefixKey> as WithPrefix<
+    K,
+    TPrefixKey
+  >]: WithPrefix<K, TPrefixKey> extends keyof S
+    ? S[WithPrefix<K, TPrefixKey>]
+    : (value: S[K]) => void;
 } & S & {
     updater: TUpdater;
   };
@@ -13,42 +16,36 @@ export type ISettersState<S, TUpdater, TPrefixKey extends string> = {
 /**
  * Convert your state to setters.
  *
- * @param state input state
- * @param updater a higher order function like `setState` that will receive a `cb` function to update state
- * @param setterKeyPrefix the method prefix string of setters, default to `"set"`
+ * @example
+ *   import useSettersState from "react-setters-state";
+ *
+ *   export function Example() {
+ *     const stateWithSetters = useSettersState({
+ *       age: 1,
+ *     });
+ *   }
  *
  * @example
+ *   import { useState } from "react";
+ *   import useSettersState from "react-setters-state";
  *
- * ### Basic Usage
+ *   export function Example() {
+ *     const [state, setState] = useState({
+ *       age: 1,
+ *     });
+ *     const stateWithSetters = useSettersState(state, setState);
+ *   }
  *
- * ```ts
- * import useSettersState from "react-setters-state";
- *
- * export function Example() {
- *   const stateWithSetters = useSettersState({
- *     age: 1,
- *   });
- * }
- * ```
- *
- * ### With a custom updater
- *
- * ```ts
- * import { useState } from "react";
- * import useSettersState from "react-setters-state";
- *
- * export function Example() {
- *   const [state, setState] = useState({
- *     age: 1,
- *   });
- *   const stateWithSetters = useSettersState(state, setState);
- * }
- * ```
+ * @param state Input state
+ * @param updater A higher order function like `setState` that will receive a
+ *   `cb` function to update state
+ * @param setterKeyPrefix The method prefix string of setters, default to
+ *   `"set"`
  */
 export function useSettersState<
   TState extends object,
   TUpdater extends (cb: (prev: TState) => TState) => void,
-  TPrefixKey extends string = "set"
+  TPrefixKey extends string = "set",
   // @ts-expect-error it's ok
 >(state: TState, updater?: TUpdater, setterKeyPrefix: TPrefixKey = "set") {
   const ref = useRef({
@@ -65,7 +62,10 @@ export function useSettersState<
     () =>
       Object.keys(ref.current!.state).reduce(
         (setters, key) => {
-          if (!(`${setterKeyPrefix}${capitalizeFirstLetter(key)}` in setters)) {
+          if (
+            !key.startsWith(setterKeyPrefix) &&
+            !(`${setterKeyPrefix}${capitalizeFirstLetter(key)}` in setters)
+          ) {
             (setters as any)[
               `${setterKeyPrefix}${capitalizeFirstLetter(key)}` as string
             ] = (newValue: any) => {
@@ -77,8 +77,8 @@ export function useSettersState<
         },
         withGetters(ref.current!.state, (key) => ref.current!.state[key], {
           updater: ref.current!.updater,
-        }) as ISettersState<TState, TUpdater, TPrefixKey>
+        }) as ISettersState<TState, TUpdater, TPrefixKey>,
       ),
-    [setterKeyPrefix]
+    [setterKeyPrefix],
   );
 }

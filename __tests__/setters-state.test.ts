@@ -150,5 +150,20 @@ describe("useSettersState", () => {
       const setters = result.current;
       expect(setters.updateName).toBeTypeOf("function");
     });
+
+    it("should not override input state properties", async () => {
+      const updateName = () => void 0;
+      const { result } = renderHook(() => {
+        return useSettersState(
+          { name: initialName, updateName },
+          undefined,
+          "update",
+        );
+      });
+
+      const hookRet = result.current;
+      expect(hookRet.updateName).toBe(updateName);
+      expect(hookRet["updateUpdateName"]).toBe(undefined);
+    });
   });
 });
